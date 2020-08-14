@@ -36,10 +36,9 @@ function Test-SysTrackInstalled {
         # Define the URL to the version files
         $web = New-Object Net.WebClient
         $uriSysTrackParent = 'https://automate.rfa.com/LabTech/Transfer/Software/SysTrack Cloud Agent'
-        [version]$vcRedist64VersionShouldBe = $web.DownloadString((Join-Path $uriSysTrackParent 'prereq64version.txt')).Trim()
-        [version]$vcRedist86VersionShouldBe = $web.DownloadString((Join-Path $uriSysTrackParent 'prereq86version.txt')).Trim()
-        [version]$SysTrackVersionShouldBe = $web.DownloadString((Join-Path $uriSysTrackParent 'version.txt')).Trim()
-        
+        [version]$vcRedist64VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
+        [version]$vcRedist86VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
+        [version]$SysTrackVersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
 
 
         # Pull in info related to the 3 packages we need to check
@@ -122,6 +121,6 @@ $URLs = @(
 )
 $web = New-Object Net.WebClient
 Foreach ($URL in $URLs) {
-    Invoke-Expression [string]($web.DownloadString( $_ ))
+    Invoke-Expression [string]($web.DownloadString( $URL ))
 }
 $web.Dispose()
