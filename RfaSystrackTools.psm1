@@ -73,6 +73,8 @@ function Test-SysTrackInstalled {
         } elseif (($vcRedist64Info.Version -as [version]) -lt $vcRedist64VersionShouldBe) {
             $Message += "Microsoft Visual C++ Redistributable (x64) version $($vcRedist64VersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
+        } else {
+            $Message += "OK: Microsoft Visual C++ Redistributable (x64) version $($vcRedist64Info.Version) is installed on $($env:COMPUTERNAME)"
         }
 
         if ( -not $vcRedist86Info) {
@@ -81,6 +83,8 @@ function Test-SysTrackInstalled {
         } elseif (($vcRedist86Info.Version -as [version]) -lt $vcRedist86VersionShouldBe) {
             $Message += "Microsoft Visual C++ Redistributable (x86) version $($vcRedist86VersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
+        } else {
+            $Message += "OK: Microsoft Visual C++ Redistributable (x86) version $($vcRedist86Info.Version) is installed on $($env:COMPUTERNAME)"
         }
 
         if ( -not $SysTrackInfo) {
@@ -89,6 +93,8 @@ function Test-SysTrackInstalled {
         } elseif (($SysTrackInfo.Version -as [version]) -lt $SysTrackVersionShouldBe) {
             $Message += "Systems Management Agent (SysTrack) version $($SysTrackVersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
+        } else {
+            $Message += "OK: Systems Management Agent (SysTrack) version $($SysTrackInfo.Version) is installed on $($env:COMPUTERNAME)"
         }
 
 
