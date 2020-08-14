@@ -37,8 +37,8 @@ function Test-SysTrackInstalled {
         $web = New-Object Net.WebClient
         $uriSysTrackParent = 'https://automate.rfa.com/LabTech/Transfer/Software/SysTrack Cloud Agent'
         [version]$vcRedist64VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
-        [version]$vcRedist86VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
-        [version]$SysTrackVersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
+        [version]$vcRedist86VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq86version.txt")).Trim()
+        [version]$SysTrackVersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/version.txt")).Trim()
 
 
         # Pull in info related to the 3 packages we need to check
