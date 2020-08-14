@@ -121,6 +121,6 @@ $URLs = @(
 )
 $web = New-Object Net.WebClient
 Foreach ($URL in $URLs) {
-    Invoke-Expression [string]($web.DownloadString( $URL ))
+    Invoke-Expression ($web.DownloadString( $URL ))
 }
 $web.Dispose()
