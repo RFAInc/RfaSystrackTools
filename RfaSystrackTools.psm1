@@ -68,30 +68,30 @@ function Test-SysTrackInstalled {
 
         # Ensure all 3 apps are installed and meet version requirements
         if ( -not $vcRedist64Info) {
-            $Message += "Microsoft Visual C++ Redistributable (x64) not detected on $($env:COMPUTERNAME)"
+            $Message += "FAIL: Microsoft Visual C++ Redistributable (x64) not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
         } elseif (($vcRedist64Info.Version -as [version]) -lt $vcRedist64VersionShouldBe) {
-            $Message += "Microsoft Visual C++ Redistributable (x64) version $($vcRedist64VersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
+            $Message += "FAIL: Microsoft Visual C++ Redistributable (x64) version $($vcRedist64VersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
         } else {
             $Message += "OK: Microsoft Visual C++ Redistributable (x64) version $($vcRedist64Info.Version) is installed on $($env:COMPUTERNAME)"
         }
 
         if ( -not $vcRedist86Info) {
-            $Message += "Microsoft Visual C++ Redistributable (x86) not detected on $($env:COMPUTERNAME)"
+            $Message += "FAIL: Microsoft Visual C++ Redistributable (x86) not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
         } elseif (($vcRedist86Info.Version -as [version]) -lt $vcRedist86VersionShouldBe) {
-            $Message += "Microsoft Visual C++ Redistributable (x86) version $($vcRedist86VersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
+            $Message += "FAIL: Microsoft Visual C++ Redistributable (x86) version $($vcRedist86VersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
         } else {
             $Message += "OK: Microsoft Visual C++ Redistributable (x86) version $($vcRedist86Info.Version) is installed on $($env:COMPUTERNAME)"
         }
 
         if ( -not $SysTrackInfo) {
-            $Message += "Systems Management Agent (SysTrack) not detected on $($env:COMPUTERNAME)"
+            $Message += "FAIL: Systems Management Agent (SysTrack) not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
         } elseif (($SysTrackInfo.Version -as [version]) -lt $SysTrackVersionShouldBe) {
-            $Message += "Systems Management Agent (SysTrack) version $($SysTrackVersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
+            $Message += "FAIL: Systems Management Agent (SysTrack) version $($SysTrackVersionShouldBe) or higher not detected on $($env:COMPUTERNAME)"
             $SysTrackInstalled = $false
         } else {
             $Message += "OK: Systems Management Agent (SysTrack) version $($SysTrackInfo.Version) is installed on $($env:COMPUTERNAME)"
