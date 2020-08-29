@@ -139,6 +139,7 @@ function Uninstall-Systrack {
         $web = New-Object Net.WebClient
         Foreach ($URL in $URLs) {
             Invoke-Expression ($web.DownloadString( $URL ))
+            sleep 1
         }
 
         $preRebootStatus = Get-PendingReboot
@@ -160,12 +161,14 @@ function Uninstall-Systrack {
         }
 
         del -force -recurse "C:\Windows\LtSvc\packages\SysTrack Cloud Agent\"
+        sleep 1
 
         del -force -recurse "C:\Program Files (x86)\SysTrack\"
         sleep 2
         
         del -force -recurse "HKLM:\SOFTWARE\WOW6432Node\Lakeside Software\" -ea 0
-            
+        sleep 1
+
         $postRebootStatus = Get-PendingReboot
 
         'reboot status:'
@@ -176,6 +179,7 @@ function Uninstall-Systrack {
             ?{$_.sideindicator -eq '=>'} |
             Select inputobject
 
+        sleep 1
         Try{ & quser } Catch { ($_.Exception.Message) }
 
         $web.Dispose()
