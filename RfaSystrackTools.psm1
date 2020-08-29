@@ -160,6 +160,9 @@ function Uninstall-Systrack {
             sleep 5
         }
 
+        gps LsiSupervisor -ea 0 | stop-process -force -ea 0
+        sleep 1
+
         del -force -recurse "C:\Windows\LtSvc\packages\SysTrack Cloud Agent\"
         sleep 1
 
