@@ -176,7 +176,7 @@ function Uninstall-Systrack {
             ?{$_.sideindicator -eq '=>'} |
             Select inputobject
 
-        Try{ & quser -ea Stop } Catch { ($_.Exception.Message) }
+        Try{ & quser } Catch { ($_.Exception.Message) }
 
         $web.Dispose()
     }
