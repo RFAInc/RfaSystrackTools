@@ -150,13 +150,19 @@ function Uninstall-Systrack {
     
     end {
         & msiexec.exe /qn /x "{5A10C299-1D99-4478-94F9-64C9DE93751D}" REBOOT=R 
+        sleep 5
 
         if (!($KeepPrerequisiteRedist)) {
             & "C:\ProgramData\Package Cache\{282975d8-55fe-4991-bbbb-06a72581ce58}\VC_redist.x64.exe"  /uninstall /quiet
+            sleep 3
             & "C:\ProgramData\Package Cache\{e31cb1a4-76b5-46a5-a084-3fa419e82201}\VC_redist.x86.exe"  /uninstall /quiet
+            sleep 5
         }
 
+        del -force -recurse "C:\Windows\LtSvc\packages\SysTrack Cloud Agent\"
+
         del -force -recurse "C:\Program Files (x86)\SysTrack\"
+        sleep 2
         
         del -force -recurse "HKLM:\SOFTWARE\WOW6432Node\Lakeside Software\" -ea 0
             
