@@ -119,6 +119,63 @@ function Test-SysTrackInstalled {
 
 }#END function Test-SysTrackInstalled
 
+function Uninstall-Systrack {
+    <#
+    .NOTES
+    Quick uninstall, use at own risk.
+
+    #>
+    [CmdletBinding()]
+    param (
+        [switch]$KeepPrerequisiteRedist
+    )
+    
+    begin {
+        # Load external functions
+        $URLs = @(
+            'https://raw.githubusercontent.com/tonypags/PsWinAdmin/master/Get-InstalledSoftware.ps1'
+            'https://raw.githubusercontent.com/tonypags/PsWinAdmin/master/Get-PendingReboot.ps1'
+        )
+        $web = New-Object Net.WebClient
+        Foreach ($URL in $URLs) {
+            Invoke-Expression ($web.DownloadString( $URL ))
+        }
+
+        $preRebootStatus = Get-PendingReboot
+    }
+    
+    process {
+        
+    }
+    
+    end {
+        & msiexec.exe /qn /x "{5A10C299-1D99-4478-94F9-64C9DE93751D}" REBOOT=R 
+
+        if (!($KeepPrerequisiteRedist)) {
+            & "C:\ProgramData\Package Cache\{282975d8-55fe-4991-bbbb-06a72581ce58}\VC_redist.x64.exe"  /uninstall /quiet
+            & "C:\ProgramData\Package Cache\{e31cb1a4-76b5-46a5-a084-3fa419e82201}\VC_redist.x86.exe"  /uninstall /quiet
+        }
+
+        del -force -recurse "C:\Program Files (x86)\SysTrack\"
+        
+        del -force -recurse "HKLM:\SOFTWARE\WOW6432Node\Lakeside Software\" -ea 0
+            
+        $postRebootStatus = Get-PendingReboot
+
+        'reboot status:'
+        $postRebootStatus
+
+        'changes in reboot status:'
+        Compare $preRebootStatus $postRebootStatus |
+            ?{$_.sideindicator -eq '=>'} |
+            Select inputobject
+
+        Try{ & quser -ea Stop } Catch { ($_.Exception.Message) }
+
+        $web.Dispose()
+    }
+}#END Uninstall-Systrack
+
 
 
 # Load external functions
