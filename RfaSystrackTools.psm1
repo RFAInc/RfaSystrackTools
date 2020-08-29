@@ -154,9 +154,9 @@ function Uninstall-Systrack {
         sleep 5
 
         if (!($KeepPrerequisiteRedist)) {
-            & "C:\ProgramData\Package Cache\{282975d8-55fe-4991-bbbb-06a72581ce58}\VC_redist.x64.exe"  /uninstall /quiet
+            & "C:\ProgramData\Package Cache\{282975d8-55fe-4991-bbbb-06a72581ce58}\VC_redist.x64.exe"  /uninstall /quiet /norestart
             sleep 3
-            & "C:\ProgramData\Package Cache\{e31cb1a4-76b5-46a5-a084-3fa419e82201}\VC_redist.x86.exe"  /uninstall /quiet
+            & "C:\ProgramData\Package Cache\{e31cb1a4-76b5-46a5-a084-3fa419e82201}\VC_redist.x86.exe"  /uninstall /quiet /norestart
             sleep 5
         }
 
