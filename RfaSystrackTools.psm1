@@ -42,7 +42,9 @@ function Test-SysTrackInstalled {
         # Make sure the URL doesn't have raw replacement string from Automate
         if ($SystrackVersionUri -like '@') {
             throw "Invalid URL: [$($SystrackVersionUri)]"
-        }
+        } else {
+		    Write-Verbose "SystrackVersionUri: [$($SystrackVersionUri)]" -Verbose
+		}
         
         # Define the requirements for versions on the 2 prerequsite packages
         # Define the URL to the version files
