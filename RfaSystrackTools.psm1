@@ -28,7 +28,7 @@ function Test-SysTrackInstalled {
         # URL for the TXT files that contains the deployed version number. Default value populated by CW Automate replacements.
         [Parameter()]
         [string]
-        $SystrackVersionUri = "https://automate.rfa.com/LabTech/Transfer/@SystrackVersionPath@"
+        $SystrackVersionUri = "https://automate.rfa.com/LabTech/Transfer/@SystrackVersionUri@"
     )
 
     Begin {
@@ -39,13 +39,15 @@ function Test-SysTrackInstalled {
         # Initialize an Output Message for the verbose stream
         [string[]]$Message = $null
 
+        # Make sure the URL doesn't have raw replacement string from Automate
+        if ($SystrackVersionUri -like '@') {
+            throw "Invalid URL: [$($SystrackVersionUri)]"
+        }
+        
         # Define the requirements for versions on the 2 prerequsite packages
         # Define the URL to the version files
         $web = New-Object Net.WebClient
         $uriSysTrackParent = 'https://automate.rfa.com/LabTech/Transfer/Software/SysTrack Cloud Agent'
-        if ($SystrackVersionUri -notlike '@') {
-            throw "Invalid URL: [$($SystrackVersionUri)]"
-        }
         [version]$vcRedist64VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
         [version]$vcRedist86VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq86version.txt")).Trim()
         [version]$SysTrackVersionShouldBe = $web.DownloadString($SystrackVersionUri).Trim()
