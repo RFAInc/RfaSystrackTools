@@ -1,4 +1,4 @@
-#v0.0.1.1
+#v0.1.0.5
 
 function Test-SysTrackInstalled {
     <#
@@ -8,6 +8,8 @@ function Test-SysTrackInstalled {
     Check the local system to see if SysTrack and its prerequisites are installed and the versions meet known minimums for RFA. 
     .PARAMETER OutFile
     Writes verbose output to file for later retrieval
+    .PARAMETER SystrackVersionUri
+    URL for the TXT files that contains the deployed version number. Default value populated by CW Automate replacements.
     .INPUTS
     This function doesn't require input, but a log path can be specified if desired.
     .OUTPUTS
@@ -21,7 +23,12 @@ function Test-SysTrackInstalled {
         [Parameter(Position=0)]
         [ValidateScript({Test-Path (Split-Path $_ -Parent)})]
         [string]
-        $OutFile
+        $OutFile,
+        
+        # URL for the TXT files that contains the deployed version number. Default value populated by CW Automate replacements.
+        [Parameter()]
+        [string]
+        $SystrackVersionUri = "https://automate.rfa.com/LabTech/Transfer/@SystrackVersionPath@"
     )
 
     Begin {
@@ -36,9 +43,12 @@ function Test-SysTrackInstalled {
         # Define the URL to the version files
         $web = New-Object Net.WebClient
         $uriSysTrackParent = 'https://automate.rfa.com/LabTech/Transfer/Software/SysTrack Cloud Agent'
+        if ($SystrackVersionUri -notlike '@') {
+            throw "Invalid URL: [$($SystrackVersionUri)]"
+        }
         [version]$vcRedist64VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq64version.txt")).Trim()
         [version]$vcRedist86VersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/prereq86version.txt")).Trim()
-        [version]$SysTrackVersionShouldBe = $web.DownloadString(("$($uriSysTrackParent)/version.txt")).Trim()
+        [version]$SysTrackVersionShouldBe = $web.DownloadString($SystrackVersionUri).Trim()
 
 
         # Pull in info related to the 3 packages we need to check
