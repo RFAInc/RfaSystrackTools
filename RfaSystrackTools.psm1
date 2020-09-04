@@ -10,6 +10,9 @@ function Test-SysTrackInstalled {
     Writes verbose output to file for later retrieval
     .PARAMETER SystrackVersionUri
     URL for the TXT files that contains the deployed version number. Default value populated by CW Automate replacements.
+    .EXAMPLE
+    $uri = "https://automate.rfa.com/LabTech/Transfer/@SystrackVersionUri@"
+    Test-SystrackInstalled -SystrackVersionUri $uri -OutFile 'c:\temp\systrack.log.txt' 
     .INPUTS
     This function doesn't require input, but a log path can be specified if desired.
     .OUTPUTS
@@ -26,9 +29,9 @@ function Test-SysTrackInstalled {
         $OutFile,
         
         # URL for the TXT files that contains the deployed version number. Default value populated by CW Automate replacements.
-        [Parameter()]
+        [Parameter(Mandatory=$true)]
         [string]
-        $SystrackVersionUri = "https://automate.rfa.com/LabTech/Transfer/@SystrackVersionUri@"
+        $SystrackVersionUri
     )
 
     Begin {
@@ -125,7 +128,11 @@ function Test-SysTrackInstalled {
         }
 
         if ($OutFile) {
-            $Message | Out-File -FilePath $OutFile -Force | Out-Null
+            $Parent = Split-Path $OutFile -Parent
+            if( -not (Test-Path $Parent)) {
+                [void](New-Item -ItemType Directory -Path $Parent -Force)
+            }
+	    $Message | Out-File -FilePath $OutFile -Force | Out-Null
         }
         
         $web.Dispose()
